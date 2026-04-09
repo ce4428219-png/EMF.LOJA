@@ -1,1 +1,383 @@
-# nova-loja
+# EMF LOJAS
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EMF Caneleiras</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+    body { background: #000; color: #fff; }
+    header {
+      background: linear-gradient(135deg, #0a0a0a, #111, #1a1a1a);
+      padding: 20px;
+      border-bottom: 2px solid #e50914;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      max-width: 1200px;
+      margin: auto;
+    }
+    .logo h1 { color: #e50914; font-size: 2rem; }
+    .logo p { color: #ccc; font-size: 0.95rem; }
+    .search-box {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .search-box input, .search-box select {
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      outline: none;
+      min-width: 180px;
+    }
+    .hero {
+      max-width: 1200px;
+      margin: 30px auto;
+      background: linear-gradient(135deg, rgba(229,9,20,0.18), rgba(255,255,255,0.04));
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 24px;
+      padding: 40px 25px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      align-items: center;
+    }
+    .hero h2 { font-size: 2.4rem; margin-bottom: 15px; }
+    .hero p { color: #ddd; line-height: 1.6; margin-bottom: 20px; }
+    .hero-buttons a {
+      display: inline-block;
+      text-decoration: none;
+      padding: 12px 18px;
+      border-radius: 12px;
+      margin-right: 10px;
+      margin-top: 10px;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+    .btn-red { background: #e50914; color: #fff; }
+    .btn-white { background: #fff; color: #000; }
+    .hero-buttons a:hover { transform: translateY(-2px); }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+    }
+    .stat {
+      background: #111;
+      padding: 20px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.08);
+      text-align: center;
+    }
+    .stat h3 { color: #e50914; font-size: 1.8rem; }
+    .section {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 15px;
+    }
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .section-title h2 { font-size: 1.8rem; color: #fff; }
+    .section-title p { color: #bbb; }
+    .categories {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .category-btn {
+      background: #111;
+      color: #fff;
+      border: 1px solid #333;
+      padding: 10px 16px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .category-btn:hover, .category-btn.active {
+      background: #e50914;
+      border-color: #e50914;
+    }
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background: #111;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.08);
+      transition: 0.3s;
+      display: flex;
+      flex-direction: column;
+    }
+    .card:hover { transform: translateY(-6px); }
+    .card-img {
+      height: 220px;
+      background: linear-gradient(135deg, #1b1b1b, #2c2c2c);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #777;
+      font-size: 1rem;
+      text-align: center;
+      padding: 20px;
+    }
+    .card-content { padding: 18px; display: flex; flex-direction: column; flex: 1; }
+    .badge {
+      display: inline-block;
+      background: #e50914;
+      color: white;
+      font-size: 0.8rem;
+      padding: 6px 10px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+    .card h3 { font-size: 1rem; margin-bottom: 10px; line-height: 1.4; min-height: 55px; }
+    .price { color: #00ff99; font-size: 1.5rem; font-weight: bold; margin-bottom: 8px; }
+    .meta { color: #bbb; font-size: 0.92rem; margin-bottom: 6px; }
+    .desc { color: #ccc; font-size: 0.92rem; margin: 10px 0 16px; line-height: 1.5; }
+    .card-buttons { margin-top: auto; display: flex; gap: 10px; flex-wrap: wrap; }
+    .card-buttons button, .card-buttons a {
+      flex: 1;
+      text-align: center;
+      padding: 12px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: bold;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+    .buy-btn { background: #e50914; color: white; }
+    .pix-btn { background: #fff; color: #000; }
+    .card-buttons button:hover, .card-buttons a:hover { opacity: 0.88; }
+    .about, .contact {
+      background: #111;
+      border-radius: 24px;
+      padding: 30px;
+      border: 1px solid rgba(255,255,255,0.08);
+      line-height: 1.8;
+      color: #ddd;
+    }
+    footer {
+      margin-top: 50px;
+      padding: 25px;
+      text-align: center;
+      background: #090909;
+      border-top: 1px solid #222;
+      color: #999;
+    }
+    .empty-message {
+      text-align: center;
+      color: #999;
+      padding: 30px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="topbar">
+      <div class="logo" style="display:flex;align-items:center;gap:14px;">
+        <img src="https://down-zl-br.img.susercontent.com/63494cf4abd911349271f069eb888568_tn.webp" alt="Logo EMF" style="width:70px;height:70px;border-radius:50%;object-fit:cover;border:2px solid #e50914;">
+        <div>
+          <h1>EMF</h1>
+          <p>Caneleiras personalizadas e suportes com qualidade</p>
+        </div>
+      </div>
+
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Pesquisar produto..." />
+        <select id="sortSelect">
+          <option value="default">Classificar por</option>
+          <option value="low">Menor preço</option>
+          <option value="high">Maior preço</option>
+          <option value="rating">Melhor avaliação</option>
+          <option value="sold">Mais vendidos</option>
+        </select>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div>
+      <h2>Caneleiras personalizadas com sua foto, frase ou time</h2>
+      <p>
+        Loja inspirada na sua vitrine da Shopee, com destaque para os produtos mais vendidos,
+        visual profissional e botões para compra rápida no WhatsApp.
+      </p>
+      <div class="hero-buttons">
+        <a href="#produtos" class="btn-red">Ver Produtos</a>
+        <a href="https://wa.me/5511967083179?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20EMF%20e%20quero%20fazer%20um%20pedido" class="btn-white" target="_blank">Falar no WhatsApp</a>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><h3>1mil+</h3><p>Seguidores</p></div>
+      <div class="stat"><h3>5 anos</h3><p>Na Shopee</p></div>
+      <div class="stat"><h3>4.7★</h3><p>Média de avaliação</p></div>
+      <div class="stat"><h3>1mil+</h3><p>Produtos vendidos</p></div>
+    </div>
+  </section>
+
+  <section class="section" id="produtos">
+    <div class="section-title">
+      <h2>Produtos EMF</h2>
+      <p>Escolha o modelo ideal para seu jogo</p>
+    </div>
+
+    <div class="categories">
+      <button class="category-btn active" data-category="Todos">Todos</button>
+      <button class="category-btn" data-category="Suporte">Suportes</button>
+      <button class="category-btn" data-category="Personalizada">Personalizadas</button>
+      <button class="category-btn" data-category="Sublimação">Sublimação</button>
+      <button class="category-btn" data-category="Religiosa">Religiosa</button>
+    </div>
+
+    <div class="products" id="productGrid"></div>
+    <div class="empty-message" id="emptyMessage">Nenhum produto encontrado.</div>
+  </section>
+
+  <section class="section">
+    <div class="section-title">
+      <h2>Sobre a EMF</h2>
+    </div>
+    <div class="about">
+      A <strong>EMF</strong> trabalha com caneleiras personalizadas, modelos leves, resistentes e ideais para quem quer jogar com estilo.
+      Aqui você pode vender seus produtos em um site próprio, sem depender só de marketplace. Depois dá para trocar fotos, alterar preços,
+      colocar seu Pix, WhatsApp e até publicar online.
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-title">
+      <h2>Contato</h2>
+    </div>
+    <div class="contact">
+      <p><strong>Loja:</strong> EMF</p>
+      <p><strong>Instagram:</strong> @e.m.f_esporte</p>
+      <p><strong>WhatsApp:</strong> +55 11 96708-3179</p>
+      <p><strong>Pix:</strong> +55 11 96708-3179</p>
+      <p><strong>Observação:</strong>qualidade e tudo.</p>
+    </div>
+  </section>
+
+  <footer>
+    © 2026 EMF Caneleiras — Site criado para vendas online.
+  </footer>
+
+  <script>
+    const products = [
+      { name: 'SUPORTE PARA CANELEIRA PERSONALIZADO', price: 28.99, rating: 4.6, sold: 738, category: 'Suporte', badge: 'Mais vendido', desc: 'Suporte confortável e firme para uso com caneleiras personalizadas.', image: 'https://down-br.img.susercontent.com/file/br-11134207-7r98o-mcfpa3dfc1goab.webp' },
+      { name: 'SUPORTE DE CANELEIRA CONFORTAVEL', price: 26.00, rating: 4.7, sold: 1000, category: 'Suporte', badge: 'Top', desc: 'Modelo confortável para treinos e jogos com excelente ajuste.', image: 'https://down-br.img.susercontent.com/file/br-11134207-7r98o-lymmevvtiydx99.webp' },
+      { name: 'CANELEIRAS PERSONALIZADAS COM SUA FOTO SUBLIMAVEL', price: 38.00, rating: 4.7, sold: 498, category: 'Personalizada', badge: 'Destaque', desc: 'Personalize com sua foto. Sublimação de verdade, não adesivo.', image: 'https://down-br.img.susercontent.com/file/br-11134207-820l9-mlqep7bsrmroa7.webp' },
+      { name: 'CANELEIRAS SUPER LEVE E RESISTENTE', price: 32.00, rating: 4.8, sold: 163, category: 'Personalizada', badge: 'Leve', desc: 'Modelo resistente e brilhante com ótima proteção.', image: 'https://down-br.img.susercontent.com/file/br-11134207-81z1k-mhzi085e6byac4.webp' },
+      { name: 'CANELEIRAS EM BRANCO PARA SUBLIMAÇÃO', price: 20.00, rating: 4.2, sold: 174, category: 'Sublimação', badge: 'Top 1', desc: 'Perfeita para personalizar do seu jeito com sublimação.', image: 'https://down-br.img.susercontent.com/file/br-11134207-81z1k-mgtdm5m334e848.webp' },
+      { name: 'Caneleiras Personalizadas com suas imagens ou frases', price: 32.00, rating: 4.4, sold: 95, category: 'Personalizada', badge: 'Criativa', desc: 'Faça com sua imagem, frase ou arte favorita.', image: 'https://down-br.img.susercontent.com/file/br-11134207-81z1k-mhugkohpfbb6d1.webp' },
+      { name: 'Caneleira de Futebol Personalizada Pentas Brasil', price: 45.00, rating: 4.7, sold: 50, category: 'Personalizada', badge: 'Brasil', desc: 'Visual brilhante, leve e com proteção total para o jogo.', image: 'https://down-br.img.susercontent.com/file/br-11134207-820le-mm5ekbb4qcxydc.webp' },
+      { name: 'CANELEIRA PERSONALIZADA D SUA EQUIPE', price: 38.00, rating: 4.6, sold: 198, category: 'Personalizada', badge: 'Time', desc: 'Ideal para montar a identidade do seu time.', image: 'https://down-br.img.susercontent.com/file/br-11134207-81ztc-mj0n36m35hqac2.webp' },
+      { name: 'CANELEIRAS LIVRAI DO MAL SALMO 91', price: 36.99, rating: 4.5, sold: 21, category: 'Religiosa', badge: 'Salmo 91', desc: 'Modelo com frase religiosa e visual diferenciado.', image: 'https://down-br.img.susercontent.com/file/br-11134207-820ls-mm5das2a8paf7e.webp' },
+      { name: 'CANELEIRA PERSONALIZADA DE ATLETAS', price: 29.99, rating: 3.4, sold: 13, category: 'Personalizada', badge: 'Atleta', desc: 'Personalização com imagens de atletas.', image: 'https://down-br.img.susercontent.com/file/br-11134207-81z1k-mhwsibgwoikj02@resize_w450_nl.webp' },
+      { name: 'SUPORTE PARA CANELEIRA SUPER LEVE TECIDO TOQUE ZERO', price: 28.99, rating: 4.8, sold: 1000, category: 'Suporte', badge: 'Toque Zero', desc: 'Tecido leve, macio e com encaixe excelente.', image: 'https://down-br.img.susercontent.com/file/br-11134207-7r98o-lymmevvtlrit96.webp' },
+      { name: 'Caneleiras E.M.F esporte para sublimação', price: 22.50, rating: 4.7, sold: 171, category: 'Sublimação', badge: 'EMF', desc: 'Marca líder para quem quer personalizar e vender.', image: 'https://down-br.img.susercontent.com/file/br-11134207-7r98o-ly83nbk4sg11c2.webp' }
+    ];
+
+    const grid = document.getElementById('productGrid');
+    const searchInput = document.getElementById('searchInput');
+    const sortSelect = document.getElementById('sortSelect');
+    const categoryButtons = document.querySelectorAll('.category-btn');
+    const emptyMessage = document.getElementById('emptyMessage');
+
+    let selectedCategory = 'Todos';
+
+    function renderProducts() {
+      let filtered = [...products];
+      const search = searchInput.value.toLowerCase();
+
+      if (selectedCategory !== 'Todos') {
+        filtered = filtered.filter(p => p.category === selectedCategory);
+      }
+
+      if (search) {
+        filtered = filtered.filter(p => p.name.toLowerCase().includes(search) || p.desc.toLowerCase().includes(search));
+      }
+
+      switch (sortSelect.value) {
+        case 'low': filtered.sort((a, b) => a.price - b.price); break;
+        case 'high': filtered.sort((a, b) => b.price - a.price); break;
+        case 'rating': filtered.sort((a, b) => b.rating - a.rating); break;
+        case 'sold': filtered.sort((a, b) => b.sold - a.sold); break;
+      }
+
+      grid.innerHTML = '';
+
+      if (filtered.length === 0) {
+        emptyMessage.style.display = 'block';
+        return;
+      }
+
+      emptyMessage.style.display = 'none';
+
+      filtered.forEach(product => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <div class="card-img" style="padding:0;background:#0d0d0d;overflow:hidden;"><img src="${product.image}" alt="${product.name}" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+          <div class="card-content">
+            <span class="badge">${product.badge}</span>
+            <h3>${product.name}</h3>
+            <div class="price">R$ ${product.price.toFixed(2).replace('.', ',')}</div>
+            <div class="meta">⭐ ${product.rating} • ${product.sold}+ vendidos</div>
+            <p class="desc">${product.desc}</p>
+            <div class="card-buttons">
+              <a class="buy-btn" target="_blank" href="https://wa.me/5511967083179?text=Ol%C3%A1%2C%20quero%20comprar%20o%20produto%3A%20${encodeURIComponent(product.name)}">Comprar</a>
+              <button class="pix-btn" onclick="copiarPix('${product.name}')">Pix</button>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function copiarPix(produto) {
+      const chavePix = '+55 11 96708-3179';
+      navigator.clipboard.writeText(chavePix);
+      alert(`Chave Pix copiada!\n\nProduto: ${produto}\n\nAgora envie o comprovante no WhatsApp.`);
+      window.open(`https://wa.me/5511967083179?text=Ol%C3%A1%2C%20acabei%20de%20pagar%20via%20Pix%20o%20produto%3A%20${encodeURIComponent(produto)}%20e%20vou%20enviar%20o%20comprovante.`, '_blank');
+    }
+
+    searchInput.addEventListener('input', renderProducts);
+    sortSelect.addEventListener('change', renderProducts);
+
+    categoryButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        categoryButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        selectedCategory = btn.dataset.category;
+        renderProducts();
+      });
+    });
+
+    renderProducts();
+  </script>
+</body>
+</html>
